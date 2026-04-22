@@ -20,28 +20,6 @@ print('Quantidade de imagens de test:', x_test.shape[0])
 
 
 
-
-'''# Contando quantidade de imagens por dígito
-import collections
-counterTrain=collections.Counter(y_train)
-counterVal=collections.Counter(y_val)
-counterTest=collections.Counter(y_test)
-
-# Plotando quantidade de imagens de cada dígito
-
-fig, ax = pyplot.subplots()
-rects1 = ax.bar(counterTrain.keys(), counterTrain.values(), label='Treino')
-rects2 = ax.bar(counterVal.keys(), counterVal.values(), label='Validação')
-rects3 = ax.bar(counterTest.keys(), counterTest.values(), label='Teste')
-
-ax.set_title('Imagens por dígito')
-ax.set_ylabel('Quantidade de imagens')
-ax.set_xlabel('Dígito')
-ax.legend()
-pyplot.show()'''
-
-
-
 # ETAPA 2--------------------------------------------------------------------------------------------
 # Formatando o dataset para funcionar como entrada do Keras
 # As imagens de entradas precisam estar em um array de 4 dimensões
@@ -112,37 +90,13 @@ history = model.fit( x=x_train, y=y_train, validation_data=(x_val,y_val), epochs
 
 
 
-'''# Plotando o histórico de treino
-
-# Histórico de acurácia
-pyplot.plot(history.history['accuracy'])
-pyplot.plot(history.history['val_accuracy'])
-pyplot.title('Acurácia do modelo no treino e validação')
-pyplot.ylabel('Acurácia')
-pyplot.xlabel('Época')
-pyplot.legend(['Treino', 'Validação'], loc='upper left')
-pyplot.show()
-
-# Histórico da função de perda
-pyplot.plot(history.history['loss'])
-pyplot.plot(history.history['val_loss'])
-pyplot.title('Perda do modelo no treino e validação')
-pyplot.ylabel('Perda')
-pyplot.xlabel('Época')
-pyplot.legend(['Treino', 'Validação'], loc='upper left')
-pyplot.show()
-'''
-
-
 # ETAPA 5--------------------------------------------------------------------------------------------
 # Avaliando a CNN treinada
 score = model.evaluate(x_test, y_test)
 
 print( '\nPerda:{:.3f}\nAcurácia:{}'.format( score[0], score[1] ) )
 
-# Imprimindo uma imagem de exemplo
 image_index = 1
-#pyplot.imshow(x_test[image_index].reshape(28, 28),cmap='Greys')
 
 # Predizendo o dígito dessa imagem
 pred = model.predict( x_test[image_index].reshape(1, 28, 28, 1) )
