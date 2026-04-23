@@ -86,7 +86,7 @@ adamOptimizer = Adam(learning_rate=0.001)
 model.compile( optimizer=adamOptimizer, loss='sparse_categorical_crossentropy', metrics=['accuracy'] )
 
 # Efetuando o treinamento de 10 épocas com o dataset de treino e validando no dataset de validação
-history = model.fit( x=x_train, y=y_train, validation_data=(x_val,y_val), epochs=10, batch_size=16, shuffle=False )
+history = model.fit( x=x_train, y=y_train, validation_data=(x_val,y_val), epochs=5, batch_size=16, shuffle=False )
 
 
 
