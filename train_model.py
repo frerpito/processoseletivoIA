@@ -9,9 +9,25 @@ from tensorflow.keras import layers
 from keras.datasets import mnist
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
+
 # Dividindo o dataset de treino em treino e validação de forma balanceada
-from sklearn.model_selection import train_test_split
-x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, stratify=y_train, test_size=0.25)
+import numpy as np
+
+indices = np.arange(x_train.shape[0])
+np.random.shuffle(indices)
+
+x_train = x_train[indices]
+y_train = y_train[indices]
+
+# dividir manualmente (75% treino / 25% validação)
+split = int(0.75 * x_train.shape[0])
+
+x_val = x_train[split:]
+y_val = y_train[split:]
+
+x_train = x_train[:split]
+y_train = y_train[:split]
+
 
 # Checando quantidade de imagens do dataset
 print('Quantidade de imagens de treino:', x_train.shape[0])
