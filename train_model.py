@@ -1,131 +1,65 @@
 import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers
+from tensorflow.keras import layers, models
 
-#insira seu código aqui
-# ETAPA 1--------------------------------------------------------------------------------------------
-# Preparando o dataset para aprendizado de máquina
-# Baixando o dataset mnist
-from keras.datasets import mnist
-(x_train, y_train), (x_test, y_test) = mnist.load_data()
+# =========================
+# 1. Carregar dados
+# =========================
+(x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
 
+# Normalização
+x_train = x_train.astype("float32") / 255.0
+x_test = x_test.astype("float32") / 255.0
 
-# Dividindo o dataset de treino em treino e validação de forma balanceada
-import numpy as np
+# Ajuste de shape (28,28) -> (28,28,1)
+x_train = x_train[..., tf.newaxis]
+x_test = x_test[..., tf.newaxis]
 
-indices = np.arange(x_train.shape[0])
-np.random.shuffle(indices)
+# =========================
+# 2. Modelo CNN
+# =========================
+model = models.Sequential([
+    layers.Conv2D(32, (3, 3), activation="relu", input_shape=(28, 28, 1)),
+    layers.MaxPooling2D(2, 2),
 
-x_train = x_train[indices]
-y_train = y_train[indices]
+    layers.Conv2D(32, (3, 3), activation="relu"),
+    layers.MaxPooling2D(2, 2),
 
-# dividir manualmente (75% treino / 25% validação)
-split = int(0.75 * x_train.shape[0])
+    layers.Flatten(),
+    layers.Dense(128, activation="relu"),
+    layers.Dropout(0.3),
+    layers.Dense(10, activation="softmax")
+])
 
-x_val = x_train[split:]
-y_val = y_train[split:]
+# =========================
+# 3. Compilar
+# =========================
+model.compile(
+    optimizer="adam",
+    loss="sparse_categorical_crossentropy",
+    metrics=["accuracy"]
+)
 
-x_train = x_train[:split]
-y_train = y_train[:split]
+# =========================
+# 4. Treinar
+# =========================
+model.fit(
+    x_train,
+    y_train,
+    epochs=5,
+    batch_size=32,
+    validation_split=0.2,
+    shuffle=True,
+    verbose=2
+)
 
+# =========================
+# 5. Avaliar
+# =========================
+loss, acc = model.evaluate(x_test, y_test, verbose=0)
+print(f"\nAcurácia final: {acc:.4f}")
 
-# Checando quantidade de imagens do dataset
-print('Quantidade de imagens de treino:', x_train.shape[0])
-print('Quantidade de imagens de validação:', x_val.shape[0])
-print('Quantidade de imagens de test:', x_test.shape[0])
-
-
-
-# ETAPA 2--------------------------------------------------------------------------------------------
-# Formatando o dataset para funcionar como entrada do Keras
-# As imagens de entradas precisam estar em um array de 4 dimensões
-x_train = x_train.reshape(x_train.shape[0], 28, 28, 1)
-x_val = x_val.reshape(x_val.shape[0], 28, 28, 1)
-x_test = x_test.reshape(x_test.shape[0], 28, 28, 1)
-
-# Cada imagem precisa ter dimensão x, y e z
-
-input_shape = (28, 28, 1)
-
-# Convertento valores dos pixels para float (garantindo precisão em operações de divisão por exemplo)
-x_train = x_train.astype('float32')
-x_val = x_val.astype('float32')
-x_test = x_test.astype('float32')
-
-# Normalizando os valores dos pixels (valores entre 0 e 1).
-x_train /= 255
-x_val /= 255
-x_test /= 255
-
-
-
-# ETAPA 3--------------------------------------------------------------------------------------------
-# Importando Keras e suas operações
-from keras.models import Sequential
-from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
-
-# Inicializando a CNN
-model = Sequential()
-
-# Operação de convolução com filtro 3 x 3 seguida da função de ativação ReLU
-model.add(Conv2D(28, kernel_size=(3,3), input_shape=input_shape, activation='relu'))
-
-# Operação de Max Pooling 2 x 2
-model.add(MaxPooling2D(pool_size=(2, 2)))
-
-# Operação de convolução com filtro 3 x 3 seguida da função de ativação ReLU
-model.add(Conv2D(28, kernel_size=(3,3), activation='relu'))
-
-# Operação de flatten (convertento o mapa de características em um vetor)
-model.add(Flatten())
-
-# Camada densa com 128 nerônios seguida da função de ativação ReLU
-model.add(Dense(128, activation='relu'))
-
-# Dropout de 50% dos neurônios
-model.add(Dropout(0.5))
-
-# Camada densa de saída com 10 (um para cada dígito) seguida de função SoftMax
-model.add(Dense(10,activation='softmax'))
-
-# Resumo do modelo
-model.summary();
-
-
-
-# ETAPA 4--------------------------------------------------------------------------------------------
-# Definindo otimizador, função de perda e métrica de eficiência.
-from keras.optimizers import Adam
-
-adamOptimizer = Adam(learning_rate=0.001)
-
-model.compile( optimizer=adamOptimizer, loss='sparse_categorical_crossentropy', metrics=['accuracy'] )
-
-# Efetuando o treinamento de 10 épocas com o dataset de treino e validando no dataset de validação
-history = model.fit( x=x_train, y=y_train, validation_data=(x_val,y_val), epochs=5, batch_size=16, shuffle=False )
-
-
-
-# ETAPA 5--------------------------------------------------------------------------------------------
-# Avaliando a CNN treinada
-score = model.evaluate(x_test, y_test)
-
-print( '\nPerda:{:.3f}\nAcurácia:{}'.format( score[0], score[1] ) )
-
-image_index = 1
-
-# Predizendo o dígito dessa imagem
-pred = model.predict( x_test[image_index].reshape(1, 28, 28, 1) )
-print( '\nO valor predito é:', pred.argmax() )
-
-
-
-#ETAPA 6--------------------------------------------------------------------------------------------------
-#salvando no formato .h5
-h5_path = "model.h5"
-model.save(h5_path)
-print("Salvo (HDF5 legado):", h5_path)
-
-
-
-
+# =========================
+# 6. Salvar
+# =========================
+model.save("model.h5")
+print("Modelo salvo como model.h5")
