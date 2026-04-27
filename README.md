@@ -317,12 +317,12 @@ O modelo implementado é uma Rede Neural Convolucional (CNN) simples, com o obje
 
 A arquitetura é composta por:
 
-Duas camadas convolucionais (Conv2D) com 32 filtros e função de ativação ReLU
-Duas camadas de pooling (MaxPooling2D) para redução espacial
-Uma camada de achatamento (Flatten) para conversão dos mapas de características em vetor
-Uma camada densa (Dense) com 128 neurônios e ativação ReLU
-Uma camada de regularização (Dropout) para evitar overfitting
-Uma camada de saída com 10 neurônios e ativação Softmax
+- Duas camadas convolucionais (Conv2D) com 32 filtros e função de ativação ReLU
+- Duas camadas de pooling (MaxPooling2D) para redução espacial
+- Uma camada de achatamento (Flatten) para conversão dos mapas de características em vetor
+- Uma camada densa (Dense) com 128 neurônios e ativação ReLU
+- Uma camada de regularização (Dropout) para evitar overfitting
+- Uma camada de saída com 10 neurônios e ativação Softmax
 
 Essa arquitetura foi escolhida para promover equilíbrio entre desempenho e custo computacional, dentro das condições e limites do desafio proposto.
 
@@ -330,8 +330,8 @@ Essa arquitetura foi escolhida para promover equilíbrio entre desempenho e cust
 
 ### 2️⃣ Bibliotecas Utilizadas
 
-TensorFlow (>= 2.12)
-NumPy
+- TensorFlow (>= 2.12)
+- NumPy
 
 
 
@@ -340,15 +340,14 @@ NumPy
 Foi utilizada a técnica de Dynamic Range Quantization, aplicada durante a conversão do modelo para o formato TensorFlow Lite.
 
 A conversão foi realizada utilizando o TFLiteConverter com a opção:
-converter.optimizations = [tf.lite.Optimize.DEFAULT]
+- converter.optimizations = [tf.lite.Optimize.DEFAULT]
 
 
 
 ### 4️⃣ Resultados Obtidos
 
 O modelo alcançou uma acurácia aproximada de:
-
-Acurácia final: 0.9903
+- Acurácia final: 0.9903
 
 
 ### 5️⃣ Comentários Adicionais (Opcional)
