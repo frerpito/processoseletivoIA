@@ -308,46 +308,54 @@ Preencha todas as seções de forma clara e objetiva.
 > O mais importante é demonstrar **clareza nas decisões técnicas**.
 
 
-
-**Exemplo:**
-
-👤 Identificação: **Nome Completo:**
+👤 Identificação: **Nome Completo: Francisco Guilherme Cesário Alcântara**
 
 
 ### 1️⃣ Resumo da Arquitetura do Modelo
 
-Descreva, em palavras, a arquitetura da **CNN** implementada no arquivo
-`train_model.py`.
+O modelo implementado é uma Rede Neural Convolucional (CNN) simples, com o objetivo de classificar das imagens do banco de dados MNIST, de forma otimizada para execução em ambientes com restrições computacionais (Edge AI).
+
+A arquitetura é composta por:
+
+Duas camadas convolucionais (Conv2D) com 32 filtros e função de ativação ReLU
+Duas camadas de pooling (MaxPooling2D) para redução espacial
+Uma camada de achatamento (Flatten) para conversão dos mapas de características em vetor
+Uma camada densa (Dense) com 128 neurônios e ativação ReLU
+Uma camada de regularização (Dropout) para evitar overfitting
+Uma camada de saída com 10 neurônios e ativação Softmax
+
+Essa arquitetura foi escolhida para promover equilíbrio entre desempenho e custo computacional, dentro das condições e limites do desafio proposto.
 
 
 
 ### 2️⃣ Bibliotecas Utilizadas
 
-Liste as principais bibliotecas utilizadas no projeto, preferencialmente
-com suas versões.
+TensorFlow (>= 2.12)
+NumPy
 
 
 
 ### 3️⃣ Técnica de Otimização do Modelo
 
-Explique qual técnica foi utilizada para otimizar o modelo no arquivo
-`optimize_model.py`.
+Foi utilizada a técnica de Dynamic Range Quantization, aplicada durante a conversão do modelo para o formato TensorFlow Lite.
+
+A conversão foi realizada utilizando o TFLiteConverter com a opção:
+converter.optimizations = [tf.lite.Optimize.DEFAULT]
 
 
 
 ### 4️⃣ Resultados Obtidos
 
-Informe o principal resultado obtido após o treinamento do modelo.
+O modelo alcançou uma acurácia aproximada de:
 
+Acurácia final: 0.9903
 
 
 ### 5️⃣ Comentários Adicionais (Opcional)
-
-Utilize este espaço para comentar:
-- Dificuldades encontradas  
-- Decisões técnicas importantes  
-- Limitações do modelo  
-- Aprendizados durante o desafio
+- Dificuldades encontradas: integração entre as etapas de treino e quantização. Também foi particularmente desafiador entender bem a teoria por trás do desafio, motivo pelo qual consutei constantemente os cursos sugeridos sobre EdgeAI na borda. Cabe também citar a organização do código para atender aos requisitos de execução automática, que exigiu bastante atenção.
+- Decisões técnicas importantes: uso limitado de épocas para treino com o objetivo de reduzir tempo de execução no CI; limpeza no código para melhor legibilidade também foi um fator que impactou a execução do desafio.
+- Limitações do modelo: Arquitetura simples; uso de 5 épocas para treino e de apenas duas camadas convolucionais, obedecendo às limitações do desafio, o que pode limitar o desempenho em problemas mais complexos; 
+- Aprendizados durante o desafio: Desenvolvimento de projeto obedecendo aos requisitos de execução automática; Aquisição de experiência no uso de GIT e GitHub; Entendimento do fluxo de desenvolvimento de um projeto em Edge AI; Aprofundar conhecimentos teóricos na área de IA com base nos cursos fornecidos pelo PNAAT (foram particularmente úteis) 
 
 
 ## 🆘 Suporte
