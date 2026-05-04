@@ -324,7 +324,7 @@ A arquitetura é composta por:
 - Uma camada de regularização (Dropout) para evitar overfitting
 - Uma camada de saída com 10 neurônios e ativação Softmax
 
-Essa arquitetura foi escolhida para promover equilíbrio entre desempenho e custo computacional, dentro das condições e limites do desafio proposto.
+Essa arquitetura foi escolhida para promover equilíbrio entre desempenho e custo computacional, respeitando as condições e limites do desafio proposto. A arquitetura também foi pensada de acordo com o conteúdo contemplado nos cursos ofertados pelo PNAAT no AVA.
 
 
 
@@ -337,24 +337,28 @@ Essa arquitetura foi escolhida para promover equilíbrio entre desempenho e cust
 
 ### 3️⃣ Técnica de Otimização do Modelo
 
-Foi utilizada a técnica de Dynamic Range Quantization, aplicada durante a conversão do modelo para o formato TensorFlow Lite.
+Foi utilizada a técnica de **Dynamic Range Quantization**, aplicada durante a conversão do modelo para o formato TensorFlow Lite.
 
-A conversão foi realizada utilizando o TFLiteConverter com a opção:
+A conversão foi realizada utilizando o TFLiteConverter com a seguinte configuração:
 - converter.optimizations = [tf.lite.Optimize.DEFAULT]
 
-
+Essa técnica reduz o tamanho do modelo e melhora a eficiência de execução, tornando-o mais adequado para aplicações em Edge AI.
 
 ### 4️⃣ Resultados Obtidos
 
 O modelo alcançou uma acurácia aproximada de:
-- Acurácia final: 0.9903
+- **Acurácia final:** 0.9903
+
+O resultado obtido é satisfatório dadas as restrições do modelo, o qual deve ser adequado para EdgeAI.
 
 
 ### 5️⃣ Comentários Adicionais (Opcional)
-- Dificuldades encontradas: integração entre as etapas de treino e quantização. Também foi particularmente desafiador entender bem a teoria por trás do desafio, motivo pelo qual consutei constantemente os cursos sugeridos sobre EdgeAI na borda. Cabe também citar a organização do código para atender aos requisitos de execução automática, que exigiu bastante atenção.
-- Decisões técnicas importantes: uso limitado de épocas para treino com o objetivo de reduzir tempo de execução no CI; limpeza no código para melhor legibilidade também foi um fator que impactou a execução do desafio.
-- Limitações do modelo: Arquitetura simples; uso de 5 épocas para treino e de apenas duas camadas convolucionais, obedecendo às limitações do desafio, o que pode limitar o desempenho em problemas mais complexos; 
-- Aprendizados durante o desafio: Desenvolvimento de projeto obedecendo aos requisitos de execução automática; Aquisição de experiência no uso de GIT e GitHub; Entendimento do fluxo de desenvolvimento de um projeto em Edge AI; Aprofundar conhecimentos teóricos na área de IA com base nos cursos fornecidos pelo PNAAT (foram particularmente úteis) 
+- **Dificuldades encontradas:** 
+Integração entre as etapas de treino e quantização. Também houve dificuldade inicial no entendimento dos conceitos teóricos relacionados ao desafio, motivo pelo qual recorri aos cursos sugeridos sobre EdgeAI. Cabe também citar que a organização do código para atender aos requisitos de execução automática exigiu atenção especial.
+- **Decisões técnicas importantes:** 
+Uso limitado de épocas para treino, com o objetivo de reduzir tempo de execução no CI; Também foi realizada organização e limpeza no código para melhorar a legibilidade e manutenção.
+- **Limitações do modelo:** Arquitetura simples; uso de cinco épocas para treino e de apenas duas camadas convolucionais (obedecendo às limitações do desafio), o que pode limitar o desempenho em problemas mais complexos; Foi considerado utilizar mais uma camada convolucional durante o treino, mas essa ideia foi deixada de lado dado o resultado satisfatório da acurácia com apenas as duas camadas utilizadas. O número reduzido de épocas também foi resultado da tentativa de diminuir a complexidade do modelo.
+- **Aprendizados durante o desafio:** Desenvolvimento de um projeto obedecendo às restrições reais de execução automática; Aquisição de experiência no uso de GIT e GitHub; Entendimento do fluxo de desenvolvimento de um projeto em Edge AI; Aprofundamento nos conhecimentos teóricos da área de IA com base nos cursos fornecidos pelo PNAAT (foram particularmente úteis).
 
 
 ## 🆘 Suporte
